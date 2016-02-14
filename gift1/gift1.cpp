@@ -21,6 +21,7 @@ int main()
 	fin >> numberOfPeople;
 
 	map<string, int> people;
+	string* peopleOrder = new string[numberOfPeople];
 
 	string name;
 
@@ -28,6 +29,7 @@ int main()
 	{
 		fin >> name;
 		people[name] = 0;
+		*(peopleOrder + x) = name;
 	}
 
 	int divisor;
@@ -35,29 +37,35 @@ int main()
 
 	string giftTo;
 
+	fin >> name;
+	fin >> amount;
+	fin >> divisor;
+
 	while(!fin.eof())
 	{
-		fin >> name;
-		fin >> amount;
-		fin >> divisor;
-
-		if(divisor != 0)
+		if(divisor != 0)  //ensure no divide by 0 error
 		{
+			//add to each of the people
 			for(int x = 0; x < divisor; x++)
 			{
 				fin >> giftTo;
 				people[giftTo] += amount / divisor;
+			
+				cout << "Gifted " << giftTo << " $" << amount / divisor << " from " << name << endl;
 			}
 
 			people[name] += 0 - amount + amount % divisor;
 		}
+
+		fin >> name;
+		fin >> amount;
+		fin >> divisor;
 	}
 
-	for(auto iter : people)
+	for(int index = 0; index < numberOfPeople; index++)
 	{
-		cout << iter.first << " " << iter.second << endl;
+		fout << *(peopleOrder + index) << " " << people[*(peopleOrder + index)] << endl;
 	}
 
-
-
+	return 0;
 }
