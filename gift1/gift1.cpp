@@ -50,18 +50,18 @@ int main()
 			{
 				fin >> giftTo;
 				people[giftTo] += amount / divisor;
-			
-				cout << "Gifted " << giftTo << " $" << amount / divisor << " from " << name << endl;
 			}
 
 			people[name] += 0 - amount + amount % divisor;
 		}
 
+		//get the new data
 		fin >> name;
 		fin >> amount;
 		fin >> divisor;
 	}
 
+	//output to file
 	for(int index = 0; index < numberOfPeople; index++)
 	{
 		fout << *(peopleOrder + index) << " " << people[*(peopleOrder + index)] << endl;
