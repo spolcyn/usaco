@@ -6,6 +6,7 @@ LANG: C++
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -22,47 +23,46 @@ int main()
 	short size;
 	fin >> size;
 
-	char* input = new char[size];
-	fin >> input;
+	string necklace;
+	fin >> necklace;
+	necklace = necklace + necklace;
 
-	short maxLength = 1, tempLength = 1, startIndex = 0, midIndex = 0;
+	short maxLength = 1, startIndex = 0, midIndex = 0;
 	bool firstStrand = true;
-	char currentBeadColor = *input;	
+	char currentBeadColor = necklace.at(0);	
 
-	for(int bead = 1; bead < size * 2; bead++)
+	for(int bead = 1; bead < necklace.length(); bead++)
 	{
 		//if started strand on white, find desired color
-		if(currentBeadColor == 'w' && *(input + bead) != 'w')
-			currentBeadColor = *(input + bead);
+		if(currentBeadColor == 'w' && necklace.at(bead) != 'w')
+			currentBeadColor = necklace.at(bead);
 
-		if(bead % size == startIndex)  //ensure doesn't go through start again
+		if(same(currentBeadColor, necklace.at(bead)))
 		{
-			break;
-		}
-		else if(same(currentBeadColor, *(input + bead % size)))  //% wraps around string
-		{
-			tempLength += 1;
 		}
 		else if(firstStrand)  //keep going for longest path, if looking for 2nd set
 		{
 			firstStrand = false;
-			currentBeadColor = *(input + bead);
-			tempLength += 1;
+			currentBeadColor = necklace.at(bead);
 			midIndex = bead;
 		}
 		else  //restart the path
 		{
 			firstStrand = true;
-			tempLength = tempLength - (midIndex - startIndex);
-			startIndex = bead % size;
+			currentBeadColor = necklace.at(bead);
+			startIndex = midIndex;
 		}
 
-		//update max length
-		if(tempLength > maxLength)
-			maxLength = tempLength;
-	
-		cout << startIndex << endl;
+		if(bead - startIndex > maxLength)
+			maxLength = bead - startIndex;
+		
+		cout << "bead: " << bead << " start: " << startIndex << " mid: " << midIndex << " length: " << (bead - startIndex) << " maxLength: " << maxLength << " firstStrand: " << firstStrand << endl;
+
+		if(startIndex == bead % (size - 1) && bead >= size)
+			break;
 	}
 
 	fout << maxLength << endl;
+
+	return 0;
 }
