@@ -15,20 +15,41 @@ bool same(char bead1, char bead2)
 	return bead1 == bead2 || bead1 == 'w' || bead2 == 'w';
 }
 
+int length(int startIndex, int endIndex)
+{
+	return endIndex - startIndex + 1; //extra 1 to account for inclusivity
+}
+
+bool firstStrand(int startIndex, int midIndex)
+{
+	return startIndex == midIndex;
+}
+
+int seekBackToWhite(int midIndex, string necklace)
+{
+	for(int x = midIndex - 1; x >= 0; x--)
+	{
+		if(necklace.at(x) != 'w')
+			return x + 1;
+	}
+
+	return 0;
+}
+
 int main()
 {
 	ifstream fin("beads.in");
 	ofstream fout("beads.out");
 
-	short size;
+	int size;
 	fin >> size;
 
 	string necklace;
 	fin >> necklace;
 	necklace = necklace + necklace;
 
-	short maxLength = 1, startIndex = 0, midIndex = 0;
-	bool firstStrand = true;
+	int startIndex = 0, midIndex = 0;
+	int maxLength = length(startIndex, midIndex);
 	char currentBeadColor = necklace.at(0);	
 
 	for(int bead = 1; bead < necklace.length(); bead++)
@@ -39,27 +60,26 @@ int main()
 
 		if(same(currentBeadColor, necklace.at(bead)))
 		{
-		}
-		else if(firstStrand)  //keep going for longest path, if looking for 2nd set
-		{
-			firstStrand = false;
-			currentBeadColor = necklace.at(bead);
-			midIndex = bead;
+			if(length(startIndex, bead) > maxLength)
+				maxLength = length(startIndex, bead);
 		}
 		else  //restart the path
 		{
-			firstStrand = true;
 			currentBeadColor = necklace.at(bead);
-			startIndex = midIndex;
+			startIndex = seekBackToWhite(midIndex, necklace);
+			midIndex = bead;
 		}
 
-		if(bead - startIndex > maxLength)
-			maxLength = bead - startIndex;
-		
-		cout << "bead: " << bead << " start: " << startIndex << " mid: " << midIndex << " length: " << (bead - startIndex) << " maxLength: " << maxLength << " firstStrand: " << firstStrand << endl;
-
-		if(startIndex == bead % (size - 1) && bead >= size)
+		if(startIndex == (bead % size) && bead >= size)
+		{
+			maxLength -= 1;
 			break;
+		}
+
+		
+		//cout << "bead: " << bead << " start: " << startIndex << " mid: " << midIndex << " length: " << length(startIndex, bead) << " maxLength: " << maxLength << " firstStrand: " << firstStrand(startIndex, midIndex) << endl;
+
+
 	}
 
 	fout << maxLength << endl;
