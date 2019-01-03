@@ -7,8 +7,6 @@ LANG: C++
 #include <iostream>
 #include <fstream>
 
-using namespace std;
-
 int main()
 {
     int numberOfFarmers;
@@ -16,9 +14,15 @@ int main()
      * Farmer N's start in [2N], stop in [2N+1]
      */
     int* farmerTimes; // start/stop times of farmers. 
+    int bufferSize = 5;
+    char buffer[bufferSize];
 
-    ofstream input;
+    std::ifstream input;
     input.open("milk2.in");
+
+    input.get(buffer, bufferSize);
+    std::cout << "Number of farmers: " << buffer << std::endl;
+
     input.close();
 
 	return 0;
