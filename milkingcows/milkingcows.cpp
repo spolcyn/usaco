@@ -40,6 +40,7 @@ int main()
         input >> *(farmerTimes + i * 2 + 1);
     }
 
+    /* Test Data Read Code
     std::cout << "Number of farmers: " << numberOfFarmers << std::endl;
 
     for(int i = 0; i < numberOfFarmers; i++)
@@ -48,6 +49,9 @@ int main()
         std::cout << getFarmerEnd(i, farmerTimes);
         std::cout << std::endl;
     }
+    */
+
+    
 
     input.close();
 

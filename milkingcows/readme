@@ -23,3 +23,5 @@ A single line with two integers that represent the longest continuous time of mi
 SAMPLE OUTPUT (file milk2.out)
 
 900 300
+
+/* Perhaps use sorting on the start time, then starting at the first time, check if there's a later start time before the end time, continuing until the chain is broken, then restarting with the one that broke the chain. At that point, also measure idle time and update the longest continuous idle time var. */
