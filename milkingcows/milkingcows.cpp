@@ -8,23 +8,28 @@ LANG: C++
 #include <fstream>
 #include <string>
 
-int getFarmerStart(int farmerNumber, int* farmerTimes)
-{
-    return *(farmerTimes + farmerNumber * 2);
+struct Farmer {
+    int startTime, endTime;
+};
+
+/* Returns the start/end time for farmer farmerNumber in the array of farmers 'farmers' */
+int getFarmerStart(int farmerNumber, Farmer* farmers) {
+    return (farmers + farmerNumber)->startTime;
+}
+int getFarmerEnd(int farmerNumber, Farmer* farmers) {
+    return (farmers + farmerNumber)->endTime;
 }
 
-int getFarmerEnd(int farmerNumber, int* farmerTimes)
-{
-    return *(farmerTimes + farmerNumber * 2 + 1);
-}
-
+/* Writes to milk2.out a single line with two integers that represent the longest continuous time
+ * of milking and the longest idle time
+ */
 int main()
 {
     int numberOfFarmers;
     /* Start/stop times of farmers. 
      * Farmer N's start in [2N], stop in [2N+1]
      */
-    int* farmerTimes; // start/stop times of farmers. 
+    Farmer* farmers; // farmer data
 
     std::ifstream input;
     input.open("milk2.in");
@@ -32,24 +37,23 @@ int main()
     /* Read in the farmers stop/start times */
     input >> numberOfFarmers;
 
-    farmerTimes = new int[numberOfFarmers * 2];
+    farmers = new Farmer[numberOfFarmers];
 
     for(int i = 0; i < numberOfFarmers; i++)
     {
-        input >> *(farmerTimes + i * 2);
-        input >> *(farmerTimes + i * 2 + 1);
+        input >> (farmers + i)->startTime;
+        input >> (farmers + i)->endTime;
     }
 
-    /* Test Data Read Code
+   /* Test Data Read Code */
     std::cout << "Number of farmers: " << numberOfFarmers << std::endl;
 
     for(int i = 0; i < numberOfFarmers; i++)
     {
-        std::cout << getFarmerStart(i, farmerTimes) << ' ';
-        std::cout << getFarmerEnd(i, farmerTimes);
+        std::cout << getFarmerStart(i, farmers) << ' ';
+        std::cout << getFarmerEnd(i, farmers);
         std::cout << std::endl;
     }
-    */
 
     
 
