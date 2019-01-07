@@ -13,6 +13,17 @@ struct Farmer {
     int startTime, endTime;
 };
 
+bool compareFarmerStart(Farmer f1, Farmer f2)
+{
+    return f1.startTime < f2.startTime;
+}
+
+bool compareFarmerEnd(Farmer f1, Farmer f2)
+{
+    return f1.endTime < f2.endTime;
+}
+
+
 /* Returns the start/end time for farmer farmerNumber in the array of farmers 'farmers' */
 int getFarmerStart(int farmerNumber, std::vector<Farmer> *farmers) {
     return farmers->at(farmerNumber).startTime;
@@ -45,6 +56,8 @@ int main()
         input >> farmers->at(i).startTime;
         input >> farmers->at(i).endTime;
     }
+
+    std::sort(farmers->begin(), farmers->end(), compareFarmerStart);
 
    /* Test Data Read Code */
     std::cout << "Number of farmers: " << numberOfFarmers << std::endl;
