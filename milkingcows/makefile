@@ -1,4 +1,7 @@
+CC=g++ 
+CFLAGS=--std=c++11
+
 all: milk2
 
 milk2: milkingcows.cpp
-	g++ milkingcows.cpp -o milk2
+	$(CC) $(CFLAGS) milkingcows.cpp -o milk2

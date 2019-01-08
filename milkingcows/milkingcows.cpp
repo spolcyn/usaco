@@ -8,6 +8,7 @@ LANG: C++
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 struct Farmer {
     int startTime, endTime;
@@ -57,9 +58,50 @@ int main()
         input >> farmers->at(i).endTime;
     }
 
+    input.close();
+
+    /* Compute longest start time */
     std::sort(farmers->begin(), farmers->end(), compareFarmerStart);
 
-   /* Test Data Read Code */
+    int currentStart, currentEnd;
+    int longestMilk, longestDrought;
+
+    currentStart = getFarmerStart(0, farmers);
+    currentEnd = getFarmerEnd(0, farmers);
+
+    longestMilk = currentEnd - currentStart;
+    longestDrought = 0;
+
+    for(Farmer f : *farmers)
+    {
+        // if the next farmer starts before the previous ends, extend the continuous milking
+        if(f.startTime < currentEnd)
+        {
+            if(f.endTime > currentEnd)
+                currentEnd = f.endTime;
+        }
+        // otherwise, compare current milking and drought to previous records
+        else
+        {
+            if(currentEnd - currentStart > longestMilk)
+                longestMilk = currentEnd - currentStart;
+            if(f.startTime - currentEnd > longestDrought)
+                longestDrought = f.startTime - currentEnd;
+            currentStart = f.startTime;
+            currentEnd = f.endTime;
+        }
+    }
+
+    /* Output results */
+
+    std::ofstream output;
+    output.open("milk2.out");
+
+    output << longestMilk << " " << longestDrought << std::endl;
+
+    output.close();
+
+   /* Test Data Read Code
     std::cout << "Number of farmers: " << numberOfFarmers << std::endl;
 
     for(int i = 0; i < numberOfFarmers; i++)
@@ -68,8 +110,8 @@ int main()
         std::cout << getFarmerEnd(i, farmers);
         std::cout << std::endl;
     }
+    */
 
-    input.close();
 
 	return 0;
 }
