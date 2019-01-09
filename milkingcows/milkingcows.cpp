@@ -75,7 +75,7 @@ int main()
     for(Farmer f : *farmers)
     {
         // if the next farmer starts before the previous ends, extend the continuous milking
-        if(f.startTime < currentEnd)
+        if(f.startTime <= currentEnd)
         {
             if(f.endTime > currentEnd)
                 currentEnd = f.endTime;
