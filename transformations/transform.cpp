@@ -4,23 +4,51 @@
 #include <stdio>
 #include <fstream>
 
+bool interpretData(char c)
+{
+    return c == '@';
+}
+
+class Square {
+
+    Square(int sideLength) 
+    { 
+        n = sideLength; 
+        square = new bool[n * n]; 
+    }
+
+    void setPoint(int i, int j, bool val)
+    {
+        *(i * n + j) = val;
+    }
+
+    void setPoint(int i, int j, char val)
+    {
+        *(i * n + j) = val == '@';
+    }
+
+private:
+     /* The side length of the square */
+    int n;
+    /* The array representing the square */
+    bool* square;
+}
+
 /* Determines which transformation was applied in the file transform.in.
  * Writes the number of the transformation applied in the file transform.out.
  */
 int main()
 {
-    /* The side length of the square */
-    int n;
-    /* The array representing the square */
-    bool* square;
 
     /* Read input */
     std::ifstream input;
 
     input.open("transform.in");
 
+    int n;
     input >> n;
-    square = new bool[n * n];
+
+    Square s = new Square(n);
 
     char c;
 
