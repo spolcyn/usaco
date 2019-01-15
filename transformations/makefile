@@ -2,8 +2,8 @@
 # Author: Stephen Polcyn
 
 CC=g++
-CFLAGS==g
+CFLAGS=-g
 
 all: transform
-	$(CC) $(CFLAGS) -o transformations transformations.cpp
+	$(CC) $(CFLAGS) -o transform transform.cpp
 
