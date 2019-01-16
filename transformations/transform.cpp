@@ -4,14 +4,16 @@
 #include <iostream>
 #include <fstream>
 
-bool interpretData(char c)
-{
-    return c == '@';
-}
-
+/* Represents a square with a grid inside */
 class Square {
 
 public:
+
+    /* all possible transformations */
+    enum Transformations {
+        90_DEG_CW, 180_DEG_CW, 270_DEG_CW, REFLECT, COMBO, NO_CHANGE, INVALID;
+    }
+
     Square(int sideLength) 
     { 
         n = sideLength; 
@@ -48,7 +50,6 @@ public:
             std::cout << std::endl;
         }
     }
-
 
 private:
     char toChar(bool val)
