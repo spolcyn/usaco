@@ -33,6 +33,11 @@ public:
         return *(square + i * n + j);
     }
 
+    int getLength()
+    {
+        return n;
+    }
+
     void printSquare()
     {
         for(int i = 0; i < n; i++)
@@ -57,34 +62,57 @@ private:
     bool* square;
 };
 
+/**
+ * Reads characters from input into square initial and after
+ */
+static void Transform_readSquares(std::ifstream* input, Square* initial, Square* after)
+{
+    char c;
+    int n = initial->getLength();
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+           *input >> c;
+
+           initial->setPoint(i, j, c);
+        }
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+           *input >> c;
+
+           after->setPoint(i, j, c);
+        }
+    }
+}
+
 /* Determines which transformation was applied in the file transform.in.
  * Writes the number of the transformation applied in the file transform.out.
  */
 int main()
 {
     /* Read input */
-    std::ifstream input;
+    std::ifstream* input;
 
-    input.open("transform.in");
+    input->open("transform.in");
 
     int n;
-    input >> n;
+    *input >> n;
 
     Square* initial = new Square(n);
-
-    char c;
-
-    for(int i = 0; i < n; i++)
-    {
-        for(int j = 0; j < n; j++)
-        {
-           input >> c;
-
-           initial->setPoint(i, j, c);
-        }
-    }
+    Square* after = new Square(n);
+    
+    Transform_readSquares(input, initial, after);
 
     initial->printSquare();
+    after->printSquare();
+
+    input->close();
 }
 
     

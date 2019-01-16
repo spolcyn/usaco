@@ -35,3 +35,5 @@ A single line containing the number from 1 through 7 (described above) that cate
 SAMPLE OUTPUT (file transform.out)
 
 1
+
+reconfigure gdb link: https://stackoverflow.com/questions/49001329/gdb-doesnt-work-on-macos-high-sierra-10-13-3
