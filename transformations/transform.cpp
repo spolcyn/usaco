@@ -8,11 +8,9 @@
 class Square {
 
 public:
-
     /* all possible transformations */
-    enum Transformations {
-        90_DEG_CW, 180_DEG_CW, 270_DEG_CW, REFLECT, COMBO, NO_CHANGE, INVALID;
-    }
+    enum Transformations { CW_90_DEG, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
+    };
 
     Square(int sideLength) 
     { 
@@ -97,10 +95,8 @@ static void Transform_readSquares(std::ifstream* input, Square* initial, Square*
  */
 int main()
 {
-    /* Read input */
-    std::ifstream* input;
-
-    input->open("transform.in");
+    /* Set up data structures */
+    std::ifstream* input = new std::ifstream("transform.in", std::ifstream::in);
 
     int n;
     *input >> n;
@@ -108,12 +104,15 @@ int main()
     Square* initial = new Square(n);
     Square* after = new Square(n);
     
+    /* Read in and verify squares output */
     Transform_readSquares(input, initial, after);
 
     initial->printSquare();
     after->printSquare();
 
+    /* Clean up */
     input->close();
+    delete(input);
 }
 
     
