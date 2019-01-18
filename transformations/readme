@@ -36,4 +36,9 @@ SAMPLE OUTPUT (file transform.out)
 
 1
 
-reconfigure gdb link: https://stackoverflow.com/questions/49001329/gdb-doesnt-work-on-macos-high-sierra-10-13-3
+General Idea:
+
+Look at 1, 2, 3, 4, 5, 6, then declare invalid otherwise. 
+Check no_change first. 
+Design Decisions: Create square objects and manipulate, then compare vs. just sending an object to a method to check if that was the transformation. 
+Or perhaps just do a different way of accessing the underlying data instead of creating entirely new objects?
