@@ -25,16 +25,19 @@ public:
         square = new bool[n * n]; 
     }
 
+    /* 0-indexed*/
     void setPoint(int i, int j, bool val)
     {
         *(square + i * n + j) = val;
     }
 
+    /* 0-indexed */
     void setPoint(int i, int j, char val)
     {
         *(square + i * n + j) = (val == '@');
     }
 
+    /* 0-indexed */
     bool getPoint(int i, int j)
     {
         return *(square + i * n + j);
@@ -62,9 +65,17 @@ public:
     {
         assert(verifySameDimensions(this, original));
 
+        /* Inefficiency: Doesn't skip center row on n is odd length squares */
         for(int row = 0; row < n; row++)
         {
+            for(int col = 0; col < n; col++)
+            {
+                if(getPoint(row, col) != original->getPoint((n-1) - row, (n-1) - col))
+                    return false;
+            }
         }
+
+        return true;
     }
 
 private:
@@ -129,7 +140,20 @@ int main()
     after->printSquare();
 
     /* Clean up */
+    delete(initial);
+    delete(after);
+    delete(input);
     input->close();
+
+    input = new std::ifstream("180CW.in", std::ifstream::in);
+    *input >> n;
+    initial = new Square(n);
+    after = new Square(n);
+    Transform_readSquares(input, initial, after);
+    initial->printSquare();
+    after->printSquare();
+    std::cout << after->analyze180CW(initial) << std::endl;
+
     delete(input);
 }
 
