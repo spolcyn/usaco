@@ -8,6 +8,13 @@
 class Square {
 
 public:
+    
+    /* Returns true if s1 and s2 have the same sidelength, false otherwise */
+    static bool verifySameDimensions(Square* s1, Square* s2)
+    {
+        return s1->getLength() == s2->getLength();
+    }
+
     /* all possible transformations */
     enum Transformations { CW_90_DEG, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
     };
@@ -46,6 +53,17 @@ public:
                 std::cout << toChar(getPoint(i, j));
 
             std::cout << std::endl;
+        }
+    }
+
+    /* Checks if this square was rotated 180 degrees CW relative to original */
+    /* Returns True if so, false otherwise. */
+    bool analyze180CW(Square* original)
+    {
+        assert(verifySameDimensions(this, original));
+
+        for(int row = 0; row < n; row++)
+        {
         }
     }
 
