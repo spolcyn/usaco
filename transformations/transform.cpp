@@ -15,6 +15,14 @@ public:
         return s1->getLength() == s2->getLength();
     }
 
+    /* Returns a square equal to initial rotated 90 degrees clockwise */
+    static Square* rotate90DegCW(Square* initial)
+    {
+        Square* rotated = new Square(initial);
+
+        return rotated;
+    }
+
     /* all possible transformations */
     enum Transformations { CW_90_DEG, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
     };
@@ -24,6 +32,13 @@ public:
         n = sideLength; 
         square = new bool[n * n]; 
     }
+
+    Square(Square* s)
+    {
+        n = s->getLength();
+        square = new bool[n * n];
+    }
+
 
     /* 0-indexed*/
     void setPoint(int i, int j, bool val)
