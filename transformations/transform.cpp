@@ -18,7 +18,13 @@ public:
     /* Returns a square equal to initial rotated 90 degrees clockwise */
     static Square* rotate90DegCW(Square* initial)
     {
-        Square* rotated = new Square(initial);
+        int n = initial->getLength();
+
+        Square* rotated = new Square(n);
+
+        for(int row = 0; row < n; row++)
+            for(int col = 0; col < n; col++)
+                rotated->setPoint(col, (n-1) - row, initial->getPoint(row, col));
 
         return rotated;
     }
@@ -152,6 +158,8 @@ int main()
     Transform_readSquares(input, initial, after);
 
     initial->printSquare();
+    std::cout << "rotated" << std::endl;
+    (Square::rotate90DegCW(initial))->printSquare();
     after->printSquare();
 
     /* Clean up */
