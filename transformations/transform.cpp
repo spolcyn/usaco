@@ -33,44 +33,37 @@ public:
     enum Transformations { CW_90_DEG, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
     };
 
-    Square(int sideLength) 
-    { 
+    Square(int sideLength) { 
         n = sideLength; 
         square = new bool[n * n]; 
     }
 
-    Square(Square* s)
-    {
+    Square(Square* s) {
         n = s->getLength();
         square = new bool[n * n];
     }
 
 
     /* 0-indexed*/
-    void setPoint(int i, int j, bool val)
-    {
+    void setPoint(int i, int j, bool val) {
         *(square + i * n + j) = val;
     }
 
     /* 0-indexed */
-    void setPoint(int i, int j, char val)
-    {
+    void setPoint(int i, int j, char val) {
         *(square + i * n + j) = (val == '@');
     }
 
     /* 0-indexed */
-    bool getPoint(int i, int j)
-    {
+    bool getPoint(int i, int j) {
         return *(square + i * n + j);
     }
 
-    int getLength()
-    {
+    int getLength() {
         return n;
     }
 
-    void printSquare()
-    {
+    void printSquare() {
         for(int i = 0; i < n; i++)
         {
             for(int j = 0; j < n; j++)
@@ -80,28 +73,9 @@ public:
         }
     }
 
-    /* Checks if this square was rotated 180 degrees CW relative to original */
-    /* Returns True if so, false otherwise. */
-    bool analyze180CW(Square* original)
-    {
-        assert(verifySameDimensions(this, original));
-
-        /* Inefficiency: Doesn't skip center row on n is odd length squares */
-        for(int row = 0; row < n; row++)
-        {
-            for(int col = 0; col < n; col++)
-            {
-                if(getPoint(row, col) != original->getPoint((n-1) - row, (n-1) - col))
-                    return false;
-            }
-        }
-
-        return true;
-    }
 
 private:
-    char toChar(bool val)
-    {
+    char toChar(bool val) {
         return val ? '@' : '-';
     } 
 
@@ -110,6 +84,20 @@ private:
     /* The array representing the square */
     bool* square;
 };
+
+bool operator==(Square& lhs, Square& rhs)
+{
+    Square::verifySameDimensions(&lhs, &rhs);
+
+    int n = lhs.getLength();
+
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < n; j++)
+            if(lhs.getPoint(i, j) != rhs.getPoint(i, j))
+                return false;
+
+    return true;
+}
 
 /**
  * Reads characters from input into square initial and after
@@ -175,7 +163,6 @@ int main()
     Transform_readSquares(input, initial, after);
     initial->printSquare();
     after->printSquare();
-    std::cout << after->analyze180CW(initial) << std::endl;
 
     delete(input);
 }
