@@ -1,4 +1,8 @@
-/* transform.cpp */
+/*
+ID: sp.shop1
+LANG: C++
+PROG: transform
+*/
 /* Author: Stephen Polcyn */
 
 #include <iostream>
@@ -15,19 +19,33 @@ class Square {
             return s1->getLength() == s2->getLength();
         }
 
-        /* Returns a square equal to initial rotated 90 degrees clockwise */
+        /* Returns a new square equal to initial rotated 90 degrees clockwise */
         static Square* rotate90DegCW(Square* initial)
         {
             int n = initial->getLength();
-
             Square* rotated = new Square(n);
 
+            /* do the rotation */
             for(int row = 0; row < n; row++)
                 for(int col = 0; col < n; col++)
                     rotated->setPoint(col, (n-1) - row, initial->getPoint(row, col));
 
             return rotated;
         }
+
+        /* Returns a new sqaure equal to initial reflected about a vertical line in the middle of the image */
+        static Square* reflectHorizontal(Square* initial)
+        {
+            int n = initial->getLength();
+            Square* reflected = new Square(n);
+
+            for(int row = 0; row < n; row++)
+                for(int col = 0; col < n; col++)
+                    reflected->setPoint(row, (n-1) - col, initial->getPoint(row, col));
+
+            return reflected;
+        }
+
 
         /* all possible transformations */
         enum Transformations { CW_90_DEG, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
