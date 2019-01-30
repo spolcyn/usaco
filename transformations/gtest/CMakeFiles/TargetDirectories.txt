@@ -1,0 +1,4 @@
+/Users/stephen/Documents/code/Projects/USACO/transformations/gtest/CMakeFiles/rebuild_cache.dir
+/Users/stephen/Documents/code/Projects/USACO/transformations/gtest/CMakeFiles/edit_cache.dir
+/Users/stephen/Documents/code/Projects/USACO/transformations/gtest/CMakeFiles/gtest_main.dir
+/Users/stephen/Documents/code/Projects/USACO/transformations/gtest/CMakeFiles/gtest.dir
