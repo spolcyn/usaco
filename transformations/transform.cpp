@@ -147,6 +147,14 @@ static void Transform_readSquares(std::ifstream* input, Square* initial, Square*
     }
 }
 
+/**
+ * Tests each of the conditions, returns the transformation code that was applied to get transformed from initial
+ */
+Square::Transformations recognizeTransformation(Square* initial, Square* transformed)
+{
+    return Square::CW_90_DEG;
+}
+
 /* Determines which transformation was applied in the file transform.in.
  * Writes the number of the transformation applied in the file transform.out.
  */
@@ -165,10 +173,10 @@ int main()
     Transform_readSquares(input, initial, after);
 
     initial->printSquare();
-    Square* test = initial;
     std::cout << "rotated" << std::endl;
     (Square::rotate90DegCW(initial))->printSquare();
-    after->printSquare();
+    std::cout << "reflected" << std::endl;
+    (Square::reflectHorizontal(initial))->printSquare();
 
     /* Clean up */
     delete(initial);
