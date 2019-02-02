@@ -14,7 +14,7 @@ class Square {
     public:
 
         /* Returns true if s1 and s2 have the same sidelength, false otherwise */
-        static bool verifySameDimensions(Square* s1, Square* s2)
+        static bool verifySameDimensions(const Square* s1, const Square* s2)
         {
             return s1->getLength() == s2->getLength();
         }
@@ -73,15 +73,15 @@ class Square {
         }
 
         /* 0-indexed */
-        bool getPoint(int i, int j) {
+        bool getPoint(int i, int j) const {
             return *(square + i * n + j);
         }
 
-        int getLength() {
+        int getLength() const {
             return n;
         }
 
-        void printSquare() {
+        void printSquare() const {
             for(int i = 0; i < n; i++)
             {
                 for(int j = 0; j < n; j++)
@@ -91,22 +91,26 @@ class Square {
             }
         }
 
-        bool operator==(Square& rhs)
+        /* Tests if this object and rhs are the same dimensions and have 
+         * the same entries at the same positions.
+         * Returns TRUE if the same, FALSE otherwise.
+         */
+        bool operator==(const Square& rhs)
         {
-            Square lhs = this;
-            Square::verifySameDimensions(&lhs, &rhs);
+            Square::verifySameDimensions(this, &rhs);
 
-            int n = lhs.getLength();
+            int n = getLength();
 
             for(int i = 0; i < n; i++)
                 for(int j = 0; j < n; j++)
-                    if(lhs.getPoint(i, j) != rhs.getPoint(i, j))
+                    if(getPoint(i, j) != rhs.getPoint(i, j))
                         return false;
 
             return true;
         }
+
     private:
-        char toChar(bool val) {
+        char toChar(bool val) const {
             return val ? '@' : '-';
         } 
 
@@ -157,29 +161,33 @@ Square::Transformations recognizeTransformation(Square* initial, Square* transfo
 
     Square* temp = Square::rotate90DegCW(initial);
 
-    if(transformed == temp)
+    if(*transformed == *temp)
         return Square::CW_90_DEG;
 
+    delete(temp);
     temp = Square::rotate90DegCW(temp);
 
-    if(transformed == temp)
+    if(*transformed == *temp)
         return Square::CW_180_DEG;
 
+    delete(temp);
     temp = Square::rotate90DegCW(temp);
 
-    if(transformed == temp)
+    if(*transformed == *temp)
         return Square::CW_270_DEG;
 
+    delete(temp);
     temp = Square::reflectHorizontal(initial);
 
-    if(transformed == temp)
+    if(*transformed == *temp)
         return Square::REFLECT;
 
     /* Test if it's a combo with the reflection */
     for(int i = 0; i < 3; i++)
     {
+        delete(temp);
         temp = Square::rotate90DegCW(temp);
-        if(transformed == temp)
+        if(*transformed == *temp)
             return Square::COMBO;
     }
 
@@ -206,26 +214,23 @@ int main()
     std::cout << "Test rotate 90 CW: Expected: " << Square::CW_90_DEG << " Actual: " << recognizeTransformation(initial, after) << std::endl;
     std::cout << "Test same squares: Expected: " << Square::NO_CHANGE << " Actual: "  << recognizeTransformation(initial, initial) << std::endl;
 
+    std::cout << "initial: " << std::endl;
     initial->printSquare();
+    std::cout << "final: " << std::endl;
+    after->printSquare();
     std::cout << "rotated" << std::endl;
-    (Square::rotate90DegCW(initial))->printSquare();
+    Square* temp = Square::rotate90DegCW(initial);
+    temp->printSquare();
+    bool test = (*temp == *after);
+    std::cout << "Equal? (expect 1): " << test << std::endl;
+
     std::cout << "reflected" << std::endl;
     (Square::reflectHorizontal(initial))->printSquare();
 
     /* Clean up */
+    input->close();
     delete(initial);
     delete(after);
-    delete(input);
-    input->close();
-
-    input = new std::ifstream("180CW.in", std::ifstream::in);
-    *input >> n;
-    initial = new Square(n);
-    after = new Square(n);
-    Transform_readSquares(input, initial, after);
-    initial->printSquare();
-    after->printSquare();
-
     delete(input);
 }
 
