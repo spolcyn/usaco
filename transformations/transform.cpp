@@ -48,7 +48,7 @@ class Square {
 
 
         /* all possible transformations */
-        enum Transformations { CW_90_DEG, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
+        enum Transformations { CW_90_DEG = 1, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
         };
 
         Square(int sideLength) { 
@@ -152,7 +152,39 @@ static void Transform_readSquares(std::ifstream* input, Square* initial, Square*
  */
 Square::Transformations recognizeTransformation(Square* initial, Square* transformed)
 {
-    return Square::CW_90_DEG;
+    if(transformed == initial)
+        return Square::NO_CHANGE;
+
+    Square* temp = Square::rotate90DegCW(initial);
+
+    if(transformed == temp)
+        return Square::CW_90_DEG;
+
+    temp = Square::rotate90DegCW(temp);
+
+    if(transformed == temp)
+        return Square::CW_180_DEG;
+
+    temp = Square::rotate90DegCW(temp);
+
+    if(transformed == temp)
+        return Square::CW_270_DEG;
+
+    temp = Square::reflectHorizontal(initial);
+
+    if(transformed == temp)
+        return Square::REFLECT;
+
+    /* Test if it's a combo with the reflection */
+    for(int i = 0; i < 3; i++)
+    {
+        temp = Square::rotate90DegCW(temp);
+        if(transformed == temp)
+            return Square::COMBO;
+    }
+
+    /* By process of elimination */
+    return Square::INVALID;
 }
 
 /* Determines which transformation was applied in the file transform.in.
@@ -171,6 +203,8 @@ int main()
 
     /* Read in and verify squares output */
     Transform_readSquares(input, initial, after);
+    std::cout << "Test rotate 90 CW: Expected: " << Square::CW_90_DEG << " Actual: " << recognizeTransformation(initial, after) << std::endl;
+    std::cout << "Test same squares: Expected: " << Square::NO_CHANGE << " Actual: "  << recognizeTransformation(initial, initial) << std::endl;
 
     initial->printSquare();
     std::cout << "rotated" << std::endl;
