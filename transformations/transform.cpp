@@ -156,31 +156,32 @@ static void Transform_readSquares(std::ifstream* input, Square* initial, Square*
  */
 Square::Transformations recognizeTransformation(Square* initial, Square* transformed)
 {
+    Square::Transformations ret = Square::INVALID;
+
     if(transformed == initial)
-        return Square::NO_CHANGE;
+        ret = Square::NO_CHANGE;
 
     Square* temp = Square::rotate90DegCW(initial);
-
     if(*transformed == *temp)
-        return Square::CW_90_DEG;
+        ret = Square::CW_90_DEG;
 
     delete(temp);
     temp = Square::rotate90DegCW(temp);
 
     if(*transformed == *temp)
-        return Square::CW_180_DEG;
+        ret = Square::CW_180_DEG;
 
     delete(temp);
     temp = Square::rotate90DegCW(temp);
 
     if(*transformed == *temp)
-        return Square::CW_270_DEG;
+        ret = Square::CW_270_DEG;
 
     delete(temp);
     temp = Square::reflectHorizontal(initial);
 
     if(*transformed == *temp)
-        return Square::REFLECT;
+        ret = Square::REFLECT;
 
     /* Test if it's a combo with the reflection */
     for(int i = 0; i < 3; i++)
@@ -188,11 +189,13 @@ Square::Transformations recognizeTransformation(Square* initial, Square* transfo
         delete(temp);
         temp = Square::rotate90DegCW(temp);
         if(*transformed == *temp)
-            return Square::COMBO;
+        {
+            ret = Square::COMBO;
+            break;
+        }
     }
 
-    /* By process of elimination */
-    return Square::INVALID;
+    return ret;
 }
 
 /* Determines which transformation was applied in the file transform.in.
