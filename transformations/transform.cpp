@@ -61,6 +61,9 @@ class Square {
             square = new bool[n * n];
         }
 
+        ~Square() {
+            delete square;
+        }
 
         /* 0-indexed*/
         void setPoint(int i, int j, bool val) {
