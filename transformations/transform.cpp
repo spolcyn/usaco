@@ -198,6 +198,8 @@ Square::Transformations recognizeTransformation(Square* initial, Square* transfo
         }
     }
 
+    delete(temp);
+
     return ret;
 }
 
@@ -213,11 +215,11 @@ int main()
     *input >> n;
 
     Square* initial = new Square(n);
-    Square* after = new Square(n);
+    Square* transformed = new Square(n);
 
     /* Read in and verify squares output */
-    Transform_readSquares(input, initial, after);
-    std::cout << "Test rotate 90 CW: Expected: " << Square::CW_90_DEG << " Actual: " << recognizeTransformation(initial, after) << std::endl;
+    Transform_readSquares(input, initial, transformed);
+/*    std::cout << "Test rotate 90 CW: Expected: " << Square::CW_90_DEG << " Actual: " << recognizeTransformation(initial, after) << std::endl;
     std::cout << "Test same squares: Expected: " << Square::NO_CHANGE << " Actual: "  << recognizeTransformation(initial, initial) << std::endl;
 
     std::cout << "initial: " << std::endl;
@@ -232,11 +234,20 @@ int main()
 
     std::cout << "reflected" << std::endl;
     (Square::reflectHorizontal(initial))->printSquare();
+*/
+    /* Analyze transformation */
+    Square::Transformations result = recognizeTransformation(initial, transformed);
+
+    /* Write out */
+    std::ofstream output;
+   output.open("transform.out");
+    output << result << std::endl;
+    output.close();
 
     /* Clean up */
     input->close();
     delete(initial);
-    delete(after);
+    delete(transformed);
     delete(input);
 }
 
