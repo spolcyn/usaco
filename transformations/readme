@@ -44,3 +44,5 @@ Design Decisions: Create square objects and manipulate, then compare vs. just se
 Or perhaps just do a different way of accessing the underlying data instead of creating entirely new objects?
 
 Memory leak detected -- also look into smart pointers: https://stackoverflow.com/questions/569775/smart-pointers-boost-explained
+
+Read about move semantics: https://www.cprogramming.com/c++11/rvalue-references-and-move-semantics-in-c++11.html

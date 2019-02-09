@@ -20,24 +20,24 @@ class Square {
         }
 
         /* Returns a new square equal to initial rotated 90 degrees clockwise */
-        static Square* rotate90DegCW(Square* initial)
+        static Square rotate90DegCW(Square* initial)
         {
             int n = initial->getLength();
-            Square* rotated = new Square(n);
+            Square rotated = Square(n);
 
             /* do the rotation */
             for(int row = 0; row < n; row++)
                 for(int col = 0; col < n; col++)
-                    rotated->setPoint(col, (n-1) - row, initial->getPoint(row, col));
+                    rotated.setPoint(col, (n-1) - row, initial->getPoint(row, col));
 
             return rotated;
         }
 
         /* Returns a new sqaure equal to initial reflected about a vertical line in the middle of the image */
-        static Square* reflectHorizontal(Square* initial)
+        static Square reflectHorizontal(Square* initial)
         {
             int n = initial->getLength();
-            Square* reflected = new Square(n);
+            Square reflected = Square(n);
 
             for(int row = 0; row < n; row++)
                 for(int col = 0; col < n; col++)
@@ -168,19 +168,19 @@ Square::Transformations recognizeTransformation(Square* initial, Square* transfo
     if(*transformed == *temp)
         ret = Square::CW_90_DEG;
 
-    delete(temp);
+    delete temp;
     temp = Square::rotate90DegCW(temp);
 
     if(*transformed == *temp)
         ret = Square::CW_180_DEG;
 
-    delete(temp);
+    delete temp;
     temp = Square::rotate90DegCW(temp);
 
     if(*transformed == *temp)
         ret = Square::CW_270_DEG;
 
-    delete(temp);
+    delete temp;
     temp = Square::reflectHorizontal(initial);
 
     if(*transformed == *temp)
@@ -189,7 +189,7 @@ Square::Transformations recognizeTransformation(Square* initial, Square* transfo
     /* Test if it's a combo with the reflection */
     for(int i = 0; i < 3; i++)
     {
-        delete(temp);
+        delete temp;
         temp = Square::rotate90DegCW(temp);
         if(*transformed == *temp)
         {
@@ -198,7 +198,7 @@ Square::Transformations recognizeTransformation(Square* initial, Square* transfo
         }
     }
 
-    delete(temp);
+    delete temp;
 
     return ret;
 }
@@ -246,9 +246,9 @@ int main()
 
     /* Clean up */
     input->close();
-    delete(initial);
-    delete(transformed);
-    delete(input);
+    delete initial;
+    delete transformed;
+    delete input;
 }
 
 
