@@ -46,3 +46,7 @@ Or perhaps just do a different way of accessing the underlying data instead of c
 Memory leak detected -- also look into smart pointers: https://stackoverflow.com/questions/569775/smart-pointers-boost-explained
 
 Read about move semantics: https://www.cprogramming.com/c++11/rvalue-references-and-move-semantics-in-c++11.html
+
+An lvalue: Expression whose address can be taken.
+An rvalue: Expression with a temporary value.
+Move function: redirects a pointer in one object to another, then sets the pointer in the temp object to NULL so when the temp object goes out of scope the destructor doesn't destruct the memory that the pointer previously pointed to (and which our non-temporary object now has a reference to).
