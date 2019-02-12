@@ -52,3 +52,7 @@ An rvalue: Expression with a temporary value.
 Move function: redirects a pointer in one object to another, then sets the pointer in the temp object to NULL so when the temp object goes out of scope the destructor doesn't destruct the memory that the pointer previously pointed to (and which our non-temporary object now has a reference to).
 
 It seems that in the article ArrayWrapper(ArrayWrapper&& other) : _p_vals(other._p_vals), _metadata(other._metadata) auto-calls the move constructor for _metadata? This must be investigated.
+
+So that syntax is an "initialization list" (https://www.cprogramming.com/tutorial/initialization-lists-c++.html). It can pass arguments to constructors of parent classes or of fields of an object. Also to note is that since const members can only be initialized once, it must be in an initialization list (otherwise, it'll already have been initialized by the time the constructor body starts running). Also needed when there is no default constructor or if a field is a reference.
+
+New question: Why are references immutable? 
