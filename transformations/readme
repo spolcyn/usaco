@@ -56,3 +56,10 @@ It seems that in the article ArrayWrapper(ArrayWrapper&& other) : _p_vals(other.
 So that syntax is an "initialization list" (https://www.cprogramming.com/tutorial/initialization-lists-c++.html). It can pass arguments to constructors of parent classes or of fields of an object. Also to note is that since const members can only be initialized once, it must be in an initialization list (otherwise, it'll already have been initialized by the time the constructor body starts running). Also needed when there is no default constructor or if a field is a reference.
 
 New question: Why are references immutable? 
+Properties of references:
+1) Reference can only reference one object for their lifetime
+2) References cannot be NULL
+3) References must be initialized when declared
+(per: https://www.geeksforgeeks.org/references-in-c/)
+
+So the reason they're immutable is because they can only be initialized when declared, and can only reference one object for their lifetime, so as a result the object it references at the beginning is the object it references for its lifetime.
