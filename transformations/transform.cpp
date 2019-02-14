@@ -14,34 +14,34 @@ class Square {
     public:
 
         /* Returns true if s1 and s2 have the same sidelength, false otherwise */
-        static bool verifySameDimensions(const Square* s1, const Square* s2)
+        static bool verifySameDimensions(Square& s1, Square& s2)
         {
-            return s1->getLength() == s2->getLength();
+            return s1.getLength() == s2.getLength();
         }
 
         /* Returns a new square equal to initial rotated 90 degrees clockwise */
-        static Square rotate90DegCW(Square* initial)
+        static Square rotate90DegCW(Square& initial)
         {
-            int n = initial->getLength();
+            int n = initial.getLength();
             Square rotated = Square(n);
 
             /* do the rotation */
             for(int row = 0; row < n; row++)
                 for(int col = 0; col < n; col++)
-                    rotated.setPoint(col, (n-1) - row, initial->getPoint(row, col));
+                    rotated.setPoint(col, (n-1) - row, initial.getPoint(row, col));
 
             return rotated;
         }
 
         /* Returns a new sqaure equal to initial reflected about a vertical line in the middle of the image */
-        static Square reflectHorizontal(Square* initial)
+        static Square reflectHorizontal(Square& initial)
         {
-            int n = initial->getLength();
+            int n = initial.getLength();
             Square reflected = Square(n);
 
             for(int row = 0; row < n; row++)
                 for(int col = 0; col < n; col++)
-                    reflected->setPoint(row, (n-1) - col, initial->getPoint(row, col));
+                    reflected.setPoint(row, (n-1) - col, initial.getPoint(row, col));
 
             return reflected;
         }
@@ -157,48 +157,42 @@ static void Transform_readSquares(std::ifstream* input, Square* initial, Square*
 /**
  * Tests each of the conditions, returns the transformation code that was applied to get transformed from initial
  */
-Square::Transformations recognizeTransformation(Square* initial, Square* transformed)
+Square::Transformations recognizeTransformation(Square& initial, Square& transformed)
 {
     Square::Transformations ret = Square::INVALID;
 
     if(transformed == initial)
         ret = Square::NO_CHANGE;
 
-    Square* temp = Square::rotate90DegCW(initial);
-    if(*transformed == *temp)
+    Square temp = Square::rotate90DegCW(initial);
+    if(transformed == temp)
         ret = Square::CW_90_DEG;
 
-    delete temp;
     temp = Square::rotate90DegCW(temp);
 
-    if(*transformed == *temp)
+    if(transformed == temp)
         ret = Square::CW_180_DEG;
 
-    delete temp;
     temp = Square::rotate90DegCW(temp);
 
-    if(*transformed == *temp)
+    if(transformed == temp)
         ret = Square::CW_270_DEG;
 
-    delete temp;
     temp = Square::reflectHorizontal(initial);
 
-    if(*transformed == *temp)
+    if(transformed == temp)
         ret = Square::REFLECT;
 
     /* Test if it's a combo with the reflection */
     for(int i = 0; i < 3; i++)
     {
-        delete temp;
         temp = Square::rotate90DegCW(temp);
-        if(*transformed == *temp)
+        if(transformed == temp)
         {
             ret = Square::COMBO;
             break;
         }
     }
-
-    delete temp;
 
     return ret;
 }
@@ -236,7 +230,7 @@ int main()
     (Square::reflectHorizontal(initial))->printSquare();
 */
     /* Analyze transformation */
-    Square::Transformations result = recognizeTransformation(initial, transformed);
+    Square::Transformations result = recognizeTransformation(*initial, *transformed);
 
     /* Write out */
     std::ofstream output;
