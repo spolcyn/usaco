@@ -100,7 +100,8 @@ class Square {
          */
         bool operator==(const Square& rhs)
         {
-            Square::verifySameDimensions(this, &rhs);
+            if(this->getLength() != rhs.getLength())
+                return false;
 
             int n = getLength();
 
@@ -128,10 +129,10 @@ class Square {
 /**
  * Reads characters from input into square initial and after
  */
-static void Transform_readSquares(std::ifstream* input, Square* initial, Square* after)
+static void Transform_readSquares(std::ifstream* input, Square& initial, Square& after)
 {
     char c;
-    int n = initial->getLength();
+    int n = initial.getLength();
 
     for(int i = 0; i < n; i++)
     {
@@ -139,7 +140,7 @@ static void Transform_readSquares(std::ifstream* input, Square* initial, Square*
         {
             *input >> c;
 
-            initial->setPoint(i, j, c);
+            initial.setPoint(i, j, c);
         }
     }
 
@@ -149,7 +150,7 @@ static void Transform_readSquares(std::ifstream* input, Square* initial, Square*
         {
             *input >> c;
 
-            after->setPoint(i, j, c);
+            after.setPoint(i, j, c);
         }
     }
 }
@@ -208,8 +209,8 @@ int main()
     int n;
     *input >> n;
 
-    Square* initial = new Square(n);
-    Square* transformed = new Square(n);
+    Square initial = Square(n);
+    Square transformed = Square(n);
 
     /* Read in and verify squares output */
     Transform_readSquares(input, initial, transformed);
@@ -230,7 +231,7 @@ int main()
     (Square::reflectHorizontal(initial))->printSquare();
 */
     /* Analyze transformation */
-    Square::Transformations result = recognizeTransformation(*initial, *transformed);
+    Square::Transformations result = recognizeTransformation(initial, transformed);
 
     /* Write out */
     std::ofstream output;
@@ -240,8 +241,6 @@ int main()
 
     /* Clean up */
     input->close();
-    delete initial;
-    delete transformed;
     delete input;
 }
 
