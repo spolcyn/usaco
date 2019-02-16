@@ -63,3 +63,5 @@ Properties of references:
 (per: https://www.geeksforgeeks.org/references-in-c/)
 
 So the reason they're immutable is because they can only be initialized when declared, and can only reference one object for their lifetime, so as a result the object it references at the beginning is the object it references for its lifetime.
+
+Possible the error is when destructing temp at the end of "recognize transformations", but not sure what's up.
