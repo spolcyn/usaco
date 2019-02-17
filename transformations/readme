@@ -65,3 +65,5 @@ Properties of references:
 So the reason they're immutable is because they can only be initialized when declared, and can only reference one object for their lifetime, so as a result the object it references at the beginning is the object it references for its lifetime.
 
 Possible the error is when destructing temp at the end of "recognize transformations", but not sure what's up.
+
+May need to write a move constructor -- for now, trying to pinpoint what's happening as these functions are being called and returning in terms of construction, copying, moving, destruction.

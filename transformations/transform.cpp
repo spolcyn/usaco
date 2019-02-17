@@ -56,12 +56,14 @@ class Square {
             square = new bool[n * n]; 
         }
 
-        Square(Square* s) {
-            n = s->getLength();
+        Square(const Square& s) {
+            std::cout << "copying" << std::endl;
+            n = s.getLength();
             square = new bool[n * n];
         }
 
         ~Square() {
+            std::cout << "destructing" << std::endl;
             delete square;
         }
 
@@ -166,6 +168,7 @@ Square::Transformations recognizeTransformation(Square& initial, Square& transfo
         ret = Square::NO_CHANGE;
 
     Square temp = Square::rotate90DegCW(initial);
+
     if(transformed == temp)
         ret = Square::CW_90_DEG;
 
