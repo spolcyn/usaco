@@ -67,3 +67,5 @@ So the reason they're immutable is because they can only be initialized when dec
 Possible the error is when destructing temp at the end of "recognize transformations", but not sure what's up.
 
 May need to write a move constructor -- for now, trying to pinpoint what's happening as these functions are being called and returning in terms of construction, copying, moving, destruction.
+
+Copy constructor not being called because it's the copy assignment operator that's being called: read this reference page: https://en.cppreference.com/w/cpp/language/copy_assignment

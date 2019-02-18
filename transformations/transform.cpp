@@ -60,11 +60,20 @@ class Square {
             std::cout << "copying" << std::endl;
             n = s.getLength();
             square = new bool[n * n];
+
+            for(int i = 0; i < n; i++)
+                for(int j = 0; j < n; j++)
+                    *(square + i * n + j) = s.getPoint(i,j);                    
         }
 
         ~Square() {
             std::cout << "destructing" << std::endl;
             delete square;
+        }
+
+        Square(Square&& s)
+        {
+            std::cout << "moving" << std::endl;
         }
 
         /* 0-indexed*/
