@@ -51,11 +51,13 @@ class Square {
         enum Transformations { CW_90_DEG = 1, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
         };
 
+        /* Constructor */
         Square(int sideLength) { 
             n = sideLength; 
             square = new bool[n * n]; 
         }
 
+        /* Copy constructor */
         Square(const Square& s) {
             std::cout << "copying" << std::endl;
             n = s.getLength();
@@ -66,14 +68,23 @@ class Square {
                     *(square + i * n + j) = s.getPoint(i,j);                    
         }
 
+        /* Destructor */
         ~Square() {
             std::cout << "destructing" << std::endl;
             delete square;
         }
 
+        /* Move constructor */
         Square(Square&& s)
         {
             std::cout << "moving" << std::endl;
+        }
+
+        /* Copy assignment operator */
+        Square& operator=(Square s)
+        {
+            std::cout << "copy assignmenting" << std::endl;
+            return *this;
         }
 
         /* 0-indexed*/

@@ -69,3 +69,5 @@ Possible the error is when destructing temp at the end of "recognize transformat
 May need to write a move constructor -- for now, trying to pinpoint what's happening as these functions are being called and returning in terms of construction, copying, moving, destruction.
 
 Copy constructor not being called because it's the copy assignment operator that's being called: read this reference page: https://en.cppreference.com/w/cpp/language/copy_assignment
+- Implicit copy assignment operator deleted if user-declared move constructor or user-declared move assignment operator 
+- Looks like I can use the copy-and-swap idiom for my copy assignment operator because the argument is a local variable, (but wouldn't that mean I couldn't use the local variable with the same variables afterwards?)
