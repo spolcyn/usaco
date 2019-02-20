@@ -53,6 +53,7 @@ class Square {
 
         /* Constructor */
         Square(int sideLength) { 
+            std::cout << "constructing" << std::endl;
             n = sideLength; 
             square = new bool[n * n]; 
         }
@@ -71,7 +72,7 @@ class Square {
         /* Destructor */
         ~Square() {
             std::cout << "destructing" << std::endl;
-            delete square;
+            delete[] square;
         }
 
         /* Move constructor */
@@ -80,10 +81,17 @@ class Square {
             std::cout << "moving" << std::endl;
         }
 
+        friend void swap(Square& s1, Square& s2)
+        {
+            std::swap(s1.n, s2.n);
+            std::swap(s1.square, s2.square);
+        }
+
         /* Copy assignment operator */
         Square& operator=(Square s)
         {
             std::cout << "copy assignmenting" << std::endl;
+            swap(*this, s);
             return *this;
         }
 
