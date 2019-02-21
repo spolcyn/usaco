@@ -23,7 +23,7 @@ class Square {
         static Square rotate90DegCW(Square& initial)
         {
             int n = initial.getLength();
-            Square rotated = Square(n);
+            Square rotated(n);
 
             /* do the rotation */
             for(int row = 0; row < n; row++)
@@ -37,7 +37,7 @@ class Square {
         static Square reflectHorizontal(Square& initial)
         {
             int n = initial.getLength();
-            Square reflected = Square(n);
+            Square reflected(n);
 
             for(int row = 0; row < n; row++)
                 for(int col = 0; col < n; col++)
@@ -53,14 +53,14 @@ class Square {
 
         /* Constructor */
         Square(int sideLength) { 
-            std::cout << "constructing" << std::endl;
+            //std::cout << "constructing" << std::endl;
             n = sideLength; 
             square = new bool[n * n]; 
         }
 
         /* Copy constructor */
         Square(const Square& s) {
-            std::cout << "copying" << std::endl;
+            //std::cout << "copying" << std::endl;
             n = s.getLength();
             square = new bool[n * n];
 
@@ -71,14 +71,14 @@ class Square {
 
         /* Destructor */
         ~Square() {
-            std::cout << "destructing" << std::endl;
+            //std::cout << "destructing" << std::endl;
             delete[] square;
         }
 
         /* Move constructor */
         Square(Square&& s)
         {
-            std::cout << "moving" << std::endl;
+            //std::cout << "moving" << std::endl;
         }
 
         friend void swap(Square& s1, Square& s2)
@@ -90,7 +90,7 @@ class Square {
         /* Copy assignment operator */
         Square& operator=(Square s)
         {
-            std::cout << "copy assignmenting" << std::endl;
+            //std::cout << "copy assignmenting" << std::endl;
             swap(*this, s);
             return *this;
         }
@@ -159,7 +159,7 @@ class Square {
 /**
  * Reads characters from input into square initial and after
  */
-static void Transform_readSquares(std::ifstream* input, Square& initial, Square& after)
+static void Transform_readSquares(std::ifstream& input, Square& initial, Square& after)
 {
     char c;
     int n = initial.getLength();
@@ -168,7 +168,7 @@ static void Transform_readSquares(std::ifstream* input, Square& initial, Square&
     {
         for(int j = 0; j < n; j++)
         {
-            *input >> c;
+            input >> c;
 
             initial.setPoint(i, j, c);
         }
@@ -178,7 +178,7 @@ static void Transform_readSquares(std::ifstream* input, Square& initial, Square&
     {
         for(int j = 0; j < n; j++)
         {
-            *input >> c;
+            input >> c;
 
             after.setPoint(i, j, c);
         }
@@ -235,13 +235,13 @@ Square::Transformations recognizeTransformation(Square& initial, Square& transfo
 int main()
 {
     /* Set up data structures */
-    std::ifstream* input = new std::ifstream("transform.in", std::ifstream::in);
+    std::ifstream input("transform.in");
 
     int n;
-    *input >> n;
+    input >> n;
 
-    Square initial = Square(n);
-    Square transformed = Square(n);
+    Square initial(n);
+    Square transformed(n);
 
     /* Read in and verify squares output */
     Transform_readSquares(input, initial, transformed);
@@ -265,14 +265,12 @@ int main()
     Square::Transformations result = recognizeTransformation(initial, transformed);
 
     /* Write out */
-    std::ofstream output;
-   output.open("transform.out");
+    std::ofstream output("transform.out");
     output << result << std::endl;
-    output.close();
 
     /* Clean up */
-    input->close();
-    delete input;
+    input.close();
+    output.close();
 }
 
 
