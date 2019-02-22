@@ -46,7 +46,6 @@ class Square {
             return reflected;
         }
 
-
         /* all possible transformations */
         enum Transformations { CW_90_DEG = 1, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
         };
@@ -159,10 +158,10 @@ class Square {
 /**
  * Reads characters from input into square initial and after
  */
-static void Transform_readSquares(std::ifstream& input, Square& initial, Square& after)
+static void Transform_readSquares(std::ifstream& input, Square& original, Square& after)
 {
     char c;
-    int n = initial.getLength();
+    int n = original.getLength();
 
     for(int i = 0; i < n; i++)
     {
@@ -170,7 +169,7 @@ static void Transform_readSquares(std::ifstream& input, Square& initial, Square&
         {
             input >> c;
 
-            initial.setPoint(i, j, c);
+            original.setPoint(i, j, c);
         }
     }
 
@@ -192,26 +191,30 @@ Square::Transformations recognizeTransformation(Square& initial, Square& transfo
 {
     Square::Transformations ret = Square::INVALID;
 
+    /* Test NO_CHANGE */
     if(transformed == initial)
         ret = Square::NO_CHANGE;
 
+    /* Test 90 Deg CW turn */
     Square temp = Square::rotate90DegCW(initial);
-
     if(transformed == temp)
         ret = Square::CW_90_DEG;
 
-    temp = Square::rotate90DegCW(temp);
+    std::cout << "After 90CW turn: " << std::endl;
+    temp.printSquare();
 
+    /* Test 180 Deg CW turn */
+    temp = Square::rotate90DegCW(temp);
     if(transformed == temp)
         ret = Square::CW_180_DEG;
 
+    /* Test 270 Deg CW turn */
     temp = Square::rotate90DegCW(temp);
-
     if(transformed == temp)
         ret = Square::CW_270_DEG;
 
+    /* Test horizontal reflection */
     temp = Square::reflectHorizontal(initial);
-
     if(transformed == temp)
         ret = Square::REFLECT;
 
@@ -245,22 +248,9 @@ int main()
 
     /* Read in and verify squares output */
     Transform_readSquares(input, initial, transformed);
-/*    std::cout << "Test rotate 90 CW: Expected: " << Square::CW_90_DEG << " Actual: " << recognizeTransformation(initial, after) << std::endl;
-    std::cout << "Test same squares: Expected: " << Square::NO_CHANGE << " Actual: "  << recognizeTransformation(initial, initial) << std::endl;
+    initial.printSquare();
+    transformed.printSquare();
 
-    std::cout << "initial: " << std::endl;
-    initial->printSquare();
-    std::cout << "final: " << std::endl;
-    after->printSquare();
-    std::cout << "rotated" << std::endl;
-    Square* temp = Square::rotate90DegCW(initial);
-    temp->printSquare();
-    bool test = (*temp == *after);
-    std::cout << "Equal? (expect 1): " << test << std::endl;
-
-    std::cout << "reflected" << std::endl;
-    (Square::reflectHorizontal(initial))->printSquare();
-*/
     /* Analyze transformation */
     Square::Transformations result = recognizeTransformation(initial, transformed);
 
@@ -268,9 +258,21 @@ int main()
     std::ofstream output("transform.out");
     output << result << std::endl;
 
-    /* Clean up */
     input.close();
+    input.open("test3.in");
+    input >> n;
+    initial = Square(n);
+    transformed = Square(n);
+    Transform_readSquares(input, initial, transformed);
+    initial.printSquare();
+    transformed.printSquare();
+    assert(recognizeTransformation(initial, transformed) == 2);
+
+    /* Clean up */
+    /* Don't need to do this on account of RAII (Resource Acquisition Is Initialization)
+     input.close();
     output.close();
+    */
 }
 
 
