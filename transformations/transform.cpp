@@ -13,19 +13,13 @@ class Square {
 
     public:
 
-        /* Returns true if s1 and s2 have the same sidelength, false otherwise */
-        static bool verifySameDimensions(Square& s1, Square& s2)
-        {
-            return s1.getLength() == s2.getLength();
-        }
-
         /* Returns a new square equal to initial rotated 90 degrees clockwise */
         static Square rotate90DegCW(Square& initial)
         {
             int n = initial.getLength();
             Square rotated(n);
 
-            /* do the rotation */
+            /* rotate */
             for(int row = 0; row < n; row++)
                 for(int col = 0; col < n; col++)
                     rotated.setPoint(col, (n-1) - row, initial.getPoint(row, col));
@@ -50,16 +44,12 @@ class Square {
         enum Transformations { CW_90_DEG = 1, CW_180_DEG, CW_270_DEG, REFLECT, COMBO, NO_CHANGE, INVALID
         };
 
-        /* Constructor */
         Square(int sideLength) { 
-            //std::cout << "constructing" << std::endl;
             n = sideLength; 
             square = new bool[n * n]; 
         }
 
-        /* Copy constructor */
         Square(const Square& s) {
-            //std::cout << "copying" << std::endl;
             n = s.getLength();
             square = new bool[n * n];
 
@@ -68,32 +58,15 @@ class Square {
                     *(square + i * n + j) = s.getPoint(i,j);                    
         }
 
-        /* Destructor */
         ~Square() {
-            //std::cout << "destructing" << std::endl;
             delete[] square;
         }
 
-        /* Move constructor */
-        Square(Square&& s)
-        {
-            //std::cout << "moving" << std::endl;
-        }
-
-        friend void swap(Square& s1, Square& s2)
-        {
+        friend void swap(Square& s1, Square& s2) {
             std::swap(s1.n, s2.n);
             std::swap(s1.square, s2.square);
         }
-
-        /* Copy assignment operator */
-        Square& operator=(Square s)
-        {
-            //std::cout << "copy assignmenting" << std::endl;
-            swap(*this, s);
-            return *this;
-        }
-
+        
         /* 0-indexed*/
         void setPoint(int i, int j, bool val) {
             *(square + i * n + j) = val;
@@ -118,15 +91,16 @@ class Square {
             {
                 for(int j = 0; j < n; j++)
                     std::cout << toChar(getPoint(i, j));
-
                 std::cout << std::endl;
             }
         }
 
-        /* Tests if this object and rhs are the same dimensions and have 
-         * the same entries at the same positions.
-         * Returns TRUE if the same, FALSE otherwise.
-         */
+        /** Operator Overloads **/
+        Square& operator=(Square s) {
+            swap(*this, s);
+            return *this;
+        }
+
         bool operator==(const Square& rhs)
         {
             if(this->getLength() != rhs.getLength())
@@ -137,9 +111,7 @@ class Square {
             for(int i = 0; i < n; i++)
                 for(int j = 0; j < n; j++)
                     if(getPoint(i, j) != rhs.getPoint(i, j))
-                    {
                         return false;
-                    }
 
             return true;
         }
@@ -189,7 +161,7 @@ static void Transform_readSquares(std::ifstream& input, Square& original, Square
 }
 
 /**
- * Tests each of the conditions, returns the transformation code that was applied to get transformed from initial
+ * Tests each of the conditions, returns the transformation code that was applied to get transformed from original 
  */
 Square::Transformations recognizeTransformation(Square& original, Square& transformed)
 {
@@ -253,5 +225,3 @@ int main()
     std::ofstream output("transform.out");
     output << result << std::endl;
 }
-
-
