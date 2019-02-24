@@ -77,3 +77,12 @@ I've been in Java too long -- a constructor is Class var(args), not Class var = 
 - the second one does copy-initialization, and a temporary object is created. Note: the assignment operator is never called. (discussion: https://stackoverflow.com/questions/587070/c-constructor-syntax)
 
 Good valgrind resource: https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-to-find-memory-leaks
+
+Fixing Test 3 Notes:
+- Looks correct after the 180CW turn, looking into equality operator
+- Issue was I wasn't returning immediatly upon finding the first one that worked, so a later one that being worked was returned
+
+Fixing Test 5 Notes:
+- When input and transformed are identical, sometimes the transformed can be achieved with a (for example) 180 degree turn, and we want to output the possible transformation in the priority given.
+
+Problem complete.

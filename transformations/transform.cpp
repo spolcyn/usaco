@@ -137,7 +137,9 @@ class Square {
             for(int i = 0; i < n; i++)
                 for(int j = 0; j < n; j++)
                     if(getPoint(i, j) != rhs.getPoint(i, j))
+                    {
                         return false;
+                    }
 
             return true;
         }
@@ -163,6 +165,7 @@ static void Transform_readSquares(std::ifstream& input, Square& original, Square
     char c;
     int n = original.getLength();
 
+    /* Read in original square */
     for(int i = 0; i < n; i++)
     {
         for(int j = 0; j < n; j++)
@@ -173,6 +176,7 @@ static void Transform_readSquares(std::ifstream& input, Square& original, Square
         }
     }
 
+    /* Read in transformed square */
     for(int i = 0; i < n; i++)
     {
         for(int j = 0; j < n; j++)
@@ -187,49 +191,43 @@ static void Transform_readSquares(std::ifstream& input, Square& original, Square
 /**
  * Tests each of the conditions, returns the transformation code that was applied to get transformed from initial
  */
-Square::Transformations recognizeTransformation(Square& initial, Square& transformed)
+Square::Transformations recognizeTransformation(Square& original, Square& transformed)
 {
     Square::Transformations ret = Square::INVALID;
 
-    /* Test NO_CHANGE */
-    if(transformed == initial)
-        ret = Square::NO_CHANGE;
-
     /* Test 90 Deg CW turn */
-    Square temp = Square::rotate90DegCW(initial);
+    Square temp = Square::rotate90DegCW(original);
     if(transformed == temp)
-        ret = Square::CW_90_DEG;
-
-    std::cout << "After 90CW turn: " << std::endl;
-    temp.printSquare();
+        return Square::CW_90_DEG;
 
     /* Test 180 Deg CW turn */
     temp = Square::rotate90DegCW(temp);
     if(transformed == temp)
-        ret = Square::CW_180_DEG;
+        return Square::CW_180_DEG;
 
     /* Test 270 Deg CW turn */
     temp = Square::rotate90DegCW(temp);
     if(transformed == temp)
-        ret = Square::CW_270_DEG;
+        return Square::CW_270_DEG;
 
     /* Test horizontal reflection */
-    temp = Square::reflectHorizontal(initial);
+    temp = Square::reflectHorizontal(original);
     if(transformed == temp)
-        ret = Square::REFLECT;
+        return Square::REFLECT;
 
     /* Test if it's a combo with the reflection */
     for(int i = 0; i < 3; i++)
     {
         temp = Square::rotate90DegCW(temp);
         if(transformed == temp)
-        {
-            ret = Square::COMBO;
-            break;
-        }
+            return Square::COMBO;
     }
 
-    return ret;
+    /* Test NO_CHANGE */
+    if(transformed == original)
+        return Square::NO_CHANGE;
+
+    return Square::INVALID;
 }
 
 /* Determines which transformation was applied in the file transform.in.
@@ -242,37 +240,18 @@ int main()
 
     int n;
     input >> n;
-
-    Square initial(n);
+    Square original(n);
     Square transformed(n);
 
-    /* Read in and verify squares output */
-    Transform_readSquares(input, initial, transformed);
-    initial.printSquare();
-    transformed.printSquare();
+    /* Read in squares */
+    Transform_readSquares(input, original, transformed);
 
     /* Analyze transformation */
-    Square::Transformations result = recognizeTransformation(initial, transformed);
+    Square::Transformations result = recognizeTransformation(original, transformed);
 
     /* Write out */
     std::ofstream output("transform.out");
     output << result << std::endl;
-
-    input.close();
-    input.open("test3.in");
-    input >> n;
-    initial = Square(n);
-    transformed = Square(n);
-    Transform_readSquares(input, initial, transformed);
-    initial.printSquare();
-    transformed.printSquare();
-    assert(recognizeTransformation(initial, transformed) == 2);
-
-    /* Clean up */
-    /* Don't need to do this on account of RAII (Resource Acquisition Is Initialization)
-     input.close();
-    output.close();
-    */
 }
 
 
